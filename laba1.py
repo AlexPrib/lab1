@@ -43,3 +43,13 @@ def month_chek (url):
         month+= 1
         url = url[0:39] + '/' + str(month) + '/'
     return month
+
+    #замена месяца в ссылке
+def months_change(url , month , flag):
+    if flag == 2:
+        url = url[0:39] + '/1/'
+    elif flag == 1:
+        url = url[0:39] + '/' + str(month) + '/' 
+    return url
+
+MMonth = month_chek(linktmp)#запись максимального месяца в Mmonth
