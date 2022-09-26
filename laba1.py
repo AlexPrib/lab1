@@ -53,3 +53,32 @@ def months_change(url , month , flag):
     return url
 
 MMonth = month_chek(linktmp)#запись максимального месяца в Mmonth
+
+for i in range(year, MaxYear+1):
+    url = years_change(i, url)
+    MaxMonth = 12
+    if i == MaxYear:
+        MaxMonth = MMonth
+    for j in range (1, MaxMonth + 1):
+        flag = 0
+        if j == MaxMonth:
+            url = months_change(url , j , 1)
+            flag = 1
+        else:
+            url = months_change(url , j , 1)
+
+        html_text = requests.get(url, headers={'User-Agent':'Windows 10'}).text
+        soup = BeautifulSoup(html_text, 'lxml')
+        rows = soup.find_all('tr', align = 'center')#нахождение всех строк 
+
+        for i in range (len(rows)):
+            data = rows[i].find_all('td')#нахождение всех нужных значений
+            MData=[]
+            numbers = [0,1,2,5,6,7,10]
+            for i in numbers:
+                MData.append(data[i].text)
+            with open('dataset.csv','a',encoding='utf-8') as csvfile:
+                    writer = csv.writer(csvfile)
+                    writer.writerow((MData[0],MData[1],MData[2],MData[3],MData[4],MData[5],MData[6]))
+        if flag == 1:
+           url = months_change(url, j, 2)
